@@ -1,4 +1,3 @@
-
 insert into taskslist.users (name, username, password)
 values ('John Doe', 'johndoe@gmail.com', '$2a$10$GHTOeyLt.avNCzWQCZbbPeC587aAHF9mglDgVd5WC0BhrApG9bcf2'),
        ('Mike Smith', 'mikesmith@yahoo.com', '$2a$10$0hnK.DOkTiI5kPXSIVO.IOEiIJfNMOVffgrapnEqTTOTD/xI2l/Vi');
@@ -19,4 +18,3 @@ insert into taskslist.users_roles (user_id, role)
 values (1, 'ROLE_ADMIN'),
        (1, 'ROLE_USER'),
        (2, 'ROLE_USER');
-

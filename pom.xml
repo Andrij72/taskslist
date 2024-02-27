@@ -17,13 +17,16 @@
     </parent>
 
     <properties>
-        <java.version>19</java.version>
+        <java.version>17</java.version>
         <lombok.version>1.18.24</lombok.version>
         <postgres.version>42.6.0</postgres.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <jjwt.version>0.11.5</jjwt.version>
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <mybatis.version>3.0.3</mybatis.version>
+        <liquibase.version>4.26.0</liquibase.version>
+        <openapi.version>2.3.0</openapi.version>
 
     </properties>
 
@@ -48,6 +51,12 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
             <version>${postgres.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
 
         <dependency>
@@ -76,16 +85,34 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-log4j2</artifactId>
-            <version>3.1.0</version>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

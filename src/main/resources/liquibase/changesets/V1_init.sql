@@ -1,5 +1,3 @@
-create schema if not exists taskslist;
-
 create table if not exists taskslist.users
 (
     id      bigserial primary key,
@@ -33,6 +31,4 @@ create table if not exists taskslist.users_roles
     primary key (user_id, role),
     constraint fk_users_roles_users foreign key (user_id) references taskslist.users (id) on delete cascade on update no action
 );
-
-
 

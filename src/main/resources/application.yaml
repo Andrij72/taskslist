@@ -1,9 +1,3 @@
-security:
-  jwt:
-    secret: "d2V0cnl5dWlvb2piaG9vZmR2YmJibm15Zw=="
-    access: 1
-    refresh: 30
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/taskslist?currentSchema=taskslist
@@ -11,9 +5,29 @@ spring:
     password: root
     driver-class-name: org.postgresql.Driver
 
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: taskslist
+
+server:
+  port: 8090
+    # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
+    # username: root
+    # password: root
+
   sql:
     init:
-      mode: always
+      mode: never
       continue-on-error: false
-     # data-locations: classpath:demo_data.sql
+      # data-locations: classpath:demo_data2.sql
 
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+security:
+  jwt:
+    access: 3600000
+    refresh: 25920000000
+    secret: cXdlcnR5ZmdodW9paWlpYmdBREZHZ2pic2tvdW9saGs=
+springdoc:
+  override-with-generic-response: false

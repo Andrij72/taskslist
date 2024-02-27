@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -40,12 +39,10 @@ public class JwtTokenProvider {
     private final UserService userService;
     private Key key;
 
-    private static final Logger loger= LoggerFactory.getLogger(JwtTokenProvider.class);
 
     @PostConstruct
     public void init() {
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
-        loger.info("JwtTokenProvider Innitialisation with key:{}",this.key);
     }
 
     public String createAccessToken(final Long userId,

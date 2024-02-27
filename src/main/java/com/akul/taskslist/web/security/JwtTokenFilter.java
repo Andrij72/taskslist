@@ -7,6 +7,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -19,19 +20,27 @@ public class JwtTokenFilter extends GenericFilterBean {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
-        String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
+    @SneakyThrows
+    public void doFilter(final ServletRequest servletRequest,
+                         final ServletResponse servletResponse,
+                         final FilterChain filterChain) {
+        String bearerToken = ((HttpServletRequest) servletRequest)
+                .getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            String token = bearerToken.substring(7);
-            if (bearerToken != null && jwtTokenProvider.validateToken(bearerToken)) {
-                try {
-                    Authentication authentication = jwtTokenProvider.getAuthentication(bearerToken);
-                    if (authentication != null) {
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
-                } catch (ResourceNotFoundException ignored) {}
-            }
-            }
+            bearerToken = bearerToken.substring(7);
         }
+        try {
+            if (bearerToken != null
+                    && jwtTokenProvider.validateToken(bearerToken)) {
+                Authentication authentication
+                        = jwtTokenProvider.getAuthentication(bearerToken);
+                if (authentication != null) {
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
+}
