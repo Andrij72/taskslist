@@ -70,6 +70,7 @@ public class ControllerAdvice {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleAuthentication(final AuthenticationException e) {
+        e.printStackTrace();
         return new ExceptionBody("Failed authentication");
     }
 

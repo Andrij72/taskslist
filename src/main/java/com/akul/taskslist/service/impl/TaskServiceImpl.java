@@ -6,6 +6,10 @@ import com.akul.taskslist.domain.task.Task;
 import com.akul.taskslist.repository.TaskRepository;
 import com.akul.taskslist.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "TaskService::getById", key = "#id")
     public Task getById(Long id) {
         return taskRepository.findTaskByUserId(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found."));
@@ -31,6 +36,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @CachePut( value = "TaskService::getAllByUserId", key = "#id")
     public Task update(Task task) {
         if (task.getStatus() == null) {
             task.setStatus(Status.TODO);
@@ -41,6 +47,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @Cacheable(value = "TaskService::getById", key = "#task.id")
     public Task create(Task task, Long userId) {
         task.setStatus(Status.TODO);
         taskRepository.create(task);
@@ -50,6 +57,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
         taskRepository.delete(id);
     }
