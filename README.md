@@ -1,0 +1,2 @@
+# TasksList
+#### This springboot application use technology stack: Springboot, Hibernate, JWT, Redis, Docker and his all available endpoints are accessed by Swagger in address http://localhost:8080/swagger-ui/index.html
