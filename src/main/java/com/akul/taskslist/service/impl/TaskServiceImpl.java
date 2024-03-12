@@ -3,8 +3,11 @@ package com.akul.taskslist.service.impl;
 import com.akul.taskslist.domain.exception.ResourceNotFoundException;
 import com.akul.taskslist.domain.task.Status;
 import com.akul.taskslist.domain.task.Task;
+import com.akul.taskslist.domain.user.User;
 import com.akul.taskslist.repository.TaskRepository;
+import com.akul.taskslist.repository.UserRepository;
 import com.akul.taskslist.service.TaskService;
+import com.akul.taskslist.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -18,13 +21,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
+
+    private final UserService userService;
     private final TaskRepository taskRepository;
 
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "TaskService::getById", key = "#id")
     public Task getById(Long id) {
-        return taskRepository.findTaskByUserId(id)
+        return taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found."));
     }
 
@@ -41,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         if (task.getStatus() == null) {
             task.setStatus(Status.TODO);
         }
-        taskRepository.update(task);
+        taskRepository.save(task);
         return task;
     }
 
@@ -49,9 +54,10 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Cacheable(value = "TaskService::getById", key = "#task.id")
     public Task create(Task task, Long userId) {
+        User user = userService.getById(userId);
         task.setStatus(Status.TODO);
-        taskRepository.create(task);
-        taskRepository.assignToUser(task.getId(), userId);
+        user.getTasks().add(task);
+        userService.update(user);
         return task;
     }
 
@@ -59,6 +65,6 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @CacheEvict(value = "TaskService::getById", key = "#id")
     public void delete(Long id) {
-        taskRepository.delete(id);
+        taskRepository.deleteById(id);
     }
 }
