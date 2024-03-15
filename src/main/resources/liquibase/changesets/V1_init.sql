@@ -1,6 +1,6 @@
 create table if not exists taskslist.users
 (
-    id      bigserial primary key,
+    id       bigserial primary key,
     name     varchar(255) not null,
     username varchar(255) not null unique,
     password varchar(255) not null
@@ -32,3 +32,9 @@ create table if not exists taskslist.users_roles
     constraint fk_users_roles_users foreign key (user_id) references taskslist.users (id) on delete cascade on update no action
 );
 
+create table if not exists tasks_images
+(
+    task_id bigint       not null,
+    image   varchar(255) not null,
+    constraint fk_tasks_images_tasks foreign key (task_id) references taskslist.tasks (id) on delete cascade on update no action
+);

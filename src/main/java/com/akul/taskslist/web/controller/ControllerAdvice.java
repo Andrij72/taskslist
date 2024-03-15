@@ -1,9 +1,6 @@
 package com.akul.taskslist.web.controller;
 
-import com.akul.taskslist.domain.exception.AccessDeniedException;
-import com.akul.taskslist.domain.exception.ExceptionBody;
-import com.akul.taskslist.domain.exception.ResourceMappingException;
-import com.akul.taskslist.domain.exception.ResourceNotFoundException;
+import com.akul.taskslist.domain.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -65,6 +62,12 @@ public class ControllerAdvice {
                         violation -> violation.getMessage()
                 )));
         return exceptionBody;
+    }
+
+    @ExceptionHandler(ImageUploadException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionBody handleImageUpload(final ImageUploadException e) {
+        return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)

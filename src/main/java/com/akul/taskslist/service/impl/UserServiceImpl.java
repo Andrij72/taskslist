@@ -45,7 +45,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Caching(put = {@CachePut(value = "UserService::getById", key = "#user.id"), @CachePut(value = "UserService::getByUsername", key = "#user.username")})
+    @Caching(put = {
+            @CachePut(value = "UserService::getById", key = "#user.id"),
+            @CachePut(value = "UserService::getByUsername", key = "#user.username")
+    })
     public User update(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -54,7 +57,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @Caching(cacheable = {@Cacheable(value = "UserService::getById", condition = "#user.id!=null", key = "#user.id"), @Cacheable(value = "UserService::getByUsername", condition = "#user.username!=null", key = "#user.username")})
+    @Caching(cacheable = {
+            @Cacheable(value = "UserService::getById", condition = "#user.id!=null", key = "#user.id"),
+            @Cacheable(value = "UserService::getByUsername", condition = "#user.username!=null", key = "#user.username")
+    })
     public User create(User user) {
         if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User already exist.");
