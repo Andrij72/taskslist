@@ -34,12 +34,12 @@ public class CustomSecurityExpression {
         return false;
     }
 
-    private boolean canAccessTask(Long taskId){
+    public boolean canAccessTask(Long taskId){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         JwtEntity jwtEntity = (JwtEntity) authentication.getPrincipal();
         Long userId = jwtEntity.getId();
-        return userService.isTaskOwner(userId, taskId);
+        return userService.isTaskOwner(userId, taskId) || hasAnyRole(authentication, Role.ROLE_ADMIN);
     }
 
 }

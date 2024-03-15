@@ -16,6 +16,10 @@ spring:
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+      # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
+    # username: root
+    # password: root
+
   liquibase:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
@@ -23,11 +27,7 @@ spring:
 
 server:
   port: ${SERVER_PORT}
-    # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
-    # username: root
-    # password: root
-mybatis:
-  mapper-locations: classpath:mybatis/mapper/*.xml
+
 security:
   jwt:
     access: 1
@@ -35,3 +35,9 @@ security:
     secret: ${JWT_SECRET}
 springdoc:
   override-with-generic-response: false
+
+minio:
+  bucket: ${MINIO_BUCKET}
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
