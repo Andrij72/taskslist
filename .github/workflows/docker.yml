@@ -1,8 +1,8 @@
 name: Docker Image CI
-  on:
-    push:
-      branches: [ 'main' ]
 
+on:
+  push:
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -12,11 +12,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - users: docker/setup-buildx-actions@v2
-      - users: mr-smithers-excellent/docker-build-push@v5
+      - uses: docker/setup-buildx-actions@v2
+      - uses: mr-smithers-excellent/docker-build-push@v5
         with:
           image: ${{ secrets.DOCKERHUB_USERNAME }}/tasklist
-          tags: 0.0.$GITHUB_RUN_NUMBER, latest
+          tags: 0.0.${{ GITHUB_RUN_NUMBER }}, latest
           dockerfile: Dockerfile
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}

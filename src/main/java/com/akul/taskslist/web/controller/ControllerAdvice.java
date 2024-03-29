@@ -1,6 +1,10 @@
 package com.akul.taskslist.web.controller;
 
-import com.akul.taskslist.domain.exception.*;
+import com.akul.taskslist.domain.exception.ExceptionBody;
+import com.akul.taskslist.domain.exception.ResourceMappingException;
+import com.akul.taskslist.domain.exception.AccessDeniedException;
+import com.akul.taskslist.domain.exception.ResourceNotFoundException;
+import com.akul.taskslist.domain.exception.ImageUploadException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -8,22 +12,25 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@RestControllerAdvice
+@RestControllerAdvice
 public class ControllerAdvice {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionBody handleResourceNotFound(final ResourceNotFoundException e) {
+    public ExceptionBody handleResourceNotFound(
+            final ResourceNotFoundException e) {
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(ResourceMappingException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionBody handleResourceMapping(final ResourceMappingException e) {
+    public ExceptionBody handleResourceMapping(
+            final ResourceMappingException e) {
         return new ExceptionBody(e.getMessage());
     }
 
@@ -42,7 +49,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionBody handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
+    public ExceptionBody handleMethodArgumentNotValid(
+            final MethodArgumentNotValidException e) {
         ExceptionBody exceptionBody = new ExceptionBody("Validation failed.");
         List<FieldError> errors = e.getBindingResult().getFieldErrors();
         exceptionBody.setErrors(errors.stream()
@@ -53,7 +61,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionBody handleConstraintViolation(final ConstraintViolationException e) {
+    public ExceptionBody handleConstraintViolation(
+            final ConstraintViolationException e) {
         ExceptionBody exceptionBody = new ExceptionBody("Validation failed.");
         exceptionBody.setErrors(e.getConstraintViolations().stream()
                 .collect(Collectors.toMap(
@@ -71,7 +80,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionBody handleAuthentication(final AuthenticationException e) {
+    public ExceptionBody handleAuthentication(
+            final AuthenticationException e) {
         e.printStackTrace();
         return new ExceptionBody("Failed authentication");
     }

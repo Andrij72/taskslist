@@ -1,7 +1,22 @@
 package com.akul.taskslist.domain.user;
 
 import com.akul.taskslist.domain.task.Task;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Transient;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -33,6 +48,5 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(inverseJoinColumns = @JoinColumn(name = "task_id"))
     private List<Task> tasks;
-
 
 }
