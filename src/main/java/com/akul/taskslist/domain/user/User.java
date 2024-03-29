@@ -3,7 +3,6 @@ package com.akul.taskslist.domain.user;
 import com.akul.taskslist.domain.task.Task;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Generated;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
