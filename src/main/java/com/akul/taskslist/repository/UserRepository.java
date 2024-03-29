@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByUsername(String username);
 
@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
             AND ut.task_id =:taskId
             )
             """, nativeQuery = true)
-    boolean isTaskOwner(@Param("userId") Long userId, @Param("taskId") Long taskId);
+    boolean isTaskOwner(@Param("userId") Long userId,
+                        @Param("taskId") Long taskId);
 
 }

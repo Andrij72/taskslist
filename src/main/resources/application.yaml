@@ -16,7 +16,7 @@ spring:
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-      # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
+    # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
     # username: root
     # password: root
 

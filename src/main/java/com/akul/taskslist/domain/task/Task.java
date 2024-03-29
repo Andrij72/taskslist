@@ -1,12 +1,10 @@
 package com.akul.taskslist.domain.task;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,8 +24,8 @@ public class Task implements Serializable {
 
     private LocalDateTime expirationDate;
 
-    @Column(name="image")
-    @CollectionTable(name="tasks_images")
+    @Column(name = "image")
+    @CollectionTable(name = "tasks_images")
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> images;
 }

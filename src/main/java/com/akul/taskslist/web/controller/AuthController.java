@@ -12,7 +12,10 @@ import com.akul.taskslist.web.validation.OnCreate;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -32,14 +35,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@Validated(OnCreate.class )@RequestBody UserDto userDto ){
+    public UserDto register(@Validated(OnCreate.class) @RequestBody UserDto userDto) {
         User user = userMapper.toEntity(userDto);
-        User createUser= userService.create(user);
+        User createUser = userService.create(user);
         return userMapper.toDto(createUser);
     }
 
     @PostMapping("/refresh")
-    public JwtResponse refresh(@RequestBody String refreshToken){
+    public JwtResponse refresh(@RequestBody String refreshToken) {
         return authService.refresh(refreshToken);
     }
 

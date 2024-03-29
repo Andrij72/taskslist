@@ -13,20 +13,19 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ImageServiceIml implements ImageService {
+public class ImageServiceImpl implements ImageService {
 
     private final MinioClient minioClient;
+
     private final MinioProperties minioProperties;
 
     @Override
-    public String uploadImage(final TaskImage image) {
+    public String upload(final TaskImage image) {
         try {
             createBucket();
         } catch (Exception e) {

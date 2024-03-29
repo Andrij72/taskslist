@@ -20,7 +20,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private static final Logger lg= LoggerFactory.getLogger(AuthServiceImpl.class);
+    private static final Logger LG = LoggerFactory
+            .getLogger(AuthServiceImpl.class);
 
     @Override
     public JwtResponse login(final JwtRequest loginRequest) {
@@ -29,10 +30,10 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(), loginRequest.getPassword())
         );
-        lg.info("WORK authenticationManager!!!");
+        LG.info("WORK authenticationManager!!!");
 
         User user = userService.getByUsername(loginRequest.getUsername());
-        lg.info("WORK userService!!!", user.getUsername());
+        LG.info("WORK userService!!!", user.getUsername());
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
         jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(

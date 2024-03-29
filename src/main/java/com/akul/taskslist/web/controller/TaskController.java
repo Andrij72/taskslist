@@ -3,8 +3,8 @@ package com.akul.taskslist.web.controller;
 import com.akul.taskslist.domain.task.Task;
 import com.akul.taskslist.domain.task.TaskImage;
 import com.akul.taskslist.service.TaskService;
-import com.akul.taskslist.web.dto.task.TaskImageDto;
 import com.akul.taskslist.web.dto.task.TaskDto;
+import com.akul.taskslist.web.dto.task.TaskImageDto;
 import com.akul.taskslist.web.mappers.TaskImageMapper;
 import com.akul.taskslist.web.mappers.TaskMapper;
 import com.akul.taskslist.web.validation.OnUpdate;
@@ -48,7 +48,7 @@ public class TaskController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete task by user id.")
     @PreAuthorize("@customSecurityExpression.canAccessTask(#id)")
-    public void deleteById(@PathVariable  Long id) {
+    public void deleteById(@PathVariable Long id) {
         taskService.delete(id);
     }
 

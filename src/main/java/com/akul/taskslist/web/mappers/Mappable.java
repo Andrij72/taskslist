@@ -1,17 +1,15 @@
 package com.akul.taskslist.web.mappers;
 
-import org.mapstruct.Mapper;
-
 import java.util.List;
 
-public interface Mappable <E, D>{
+public interface Mappable<E, D> {
 
-   D toDto(E entity);
+    D toDto(E entity);
 
-   List<D> toDto(List<E> entity);
+    List<D> toDto(List<E> entity);
 
-   E toEntity(D dto);
+    E toEntity(D dto);
 
-   List<E> toEntity(List<D> dtos);
+    List<E> toEntity(List<D> dtos);
 
 }
