@@ -23,5 +23,8 @@ jobs:
           key: maven-${{ hashFiles('**/pom.xml')}}
           restore-keys: |
             maven-
-      -  run: mvn clean install
+      - name: Build with Maven
+          run: mvn clean install
+      - name: Run Checkstyle
+          run: mvn checkstyle:checkstyle
 
