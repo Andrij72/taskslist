@@ -106,7 +106,6 @@ public class UserServiceImplTest {
         user.setPassword(password);
         user.setPasswordConfirmation(password);
         Mockito.when(userRepository.findUserByUsername(username)).thenReturn(Optional.empty());
-        User testUser = userService.create(user);
         Mockito.verify(userRepository).findUserByUsername(username);
         Mockito.verify(userRepository).save(user);
         Mockito.verify(passwordEncoder).encode(password);

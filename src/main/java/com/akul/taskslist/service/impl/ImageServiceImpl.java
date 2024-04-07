@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -66,7 +65,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String getExtension(final MultipartFile file) {
-        return Objects.requireNonNull(file.getOriginalFilename())
+        return file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
     }
 

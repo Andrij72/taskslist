@@ -1,5 +1,6 @@
 package com.akul.taskslist.service.impl;
 
+
 import com.akul.taskslist.domain.exception.ResourceNotFoundException;
 import com.akul.taskslist.domain.task.Status;
 import com.akul.taskslist.domain.task.Task;
@@ -7,7 +8,6 @@ import com.akul.taskslist.domain.task.TaskImage;
 import com.akul.taskslist.repository.TaskRepository;
 import com.akul.taskslist.service.ImageService;
 import com.akul.taskslist.service.TaskService;
-import com.akul.taskslist.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor

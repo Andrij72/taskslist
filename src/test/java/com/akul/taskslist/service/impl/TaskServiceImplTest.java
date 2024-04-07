@@ -38,10 +38,6 @@ public class TaskServiceImplTest {
     @Autowired
     private TaskServiceImpl taskService;
 
-    public TaskServiceImplTest(TaskServiceImpl taskService) {
-        this.taskService = taskService;
-    }
-
     @Test
     void getById() {
         Long id = 1L;
