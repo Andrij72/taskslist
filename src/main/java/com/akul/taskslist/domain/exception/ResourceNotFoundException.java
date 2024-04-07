@@ -3,7 +3,8 @@ package com.akul.taskslist.domain.exception;
 import java.sql.SQLException;
 
 public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String message, SQLException e) {
+    public ResourceNotFoundException(final String message,
+                                     final SQLException e) {
         super(message);
     }
 
