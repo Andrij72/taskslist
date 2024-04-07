@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 
 @ExtendWith(SpringExtension.class)
@@ -105,11 +106,17 @@ public class UserServiceImplTest {
         user.setUsername(username);
         user.setPassword(password);
         user.setPasswordConfirmation(password);
-        Mockito.when(userRepository.findUserByUsername(username)).thenReturn(Optional.empty());
-        Mockito.verify(userRepository).findUserByUsername(username);
+        Mockito.when(userRepository.findUserByUsername(username))
+                .thenReturn(Optional.empty());
+        Mockito.when(passwordEncoder.encode(password))
+                .thenReturn("encodPassword");
+        User testUser = userService.create(user);
         Mockito.verify(userRepository).save(user);
-        Mockito.verify(passwordEncoder).encode(password);
-        Assertions.assertEquals(Set.of(Role.ROLE_USER), user.getRoles());
+
+        Assertions.assertEquals(Set.of(Role.ROLE_USER),
+                testUser.getRoles());
+        Assertions.assertEquals("encodPassword",
+                testUser.getPassword());
     }
 
     @Test
