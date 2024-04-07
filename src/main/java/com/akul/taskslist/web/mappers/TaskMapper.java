@@ -4,9 +4,6 @@ import com.akul.taskslist.domain.task.Task;
 import com.akul.taskslist.web.dto.task.TaskDto;
 import org.mapstruct.Mapper;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface TaskMapper extends Mappable <Task, TaskDto> {
+public interface TaskMapper extends Mappable<Task, TaskDto> {
 }
