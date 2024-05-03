@@ -1,5 +1,6 @@
 package com.akul.taskslist.service.impl;
 
+import com.akul.taskslist.domain.MailType;
 import com.akul.taskslist.domain.exception.ResourceNotFoundException;
 import com.akul.taskslist.domain.user.Role;
 import com.akul.taskslist.domain.user.User;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Properties;
 import java.util.Set;
 
 @Service
@@ -21,6 +23,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailServiceImpl mailService;
 
     @Override
     @Transactional(readOnly = true)
@@ -34,10 +37,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "UserService::getByUsername", key = "#username")
+    @Cacheable(value = "UserService::getByUsername",
+            key = "#username")
     public User getByUsername(final String username) {
         return userRepository
                 .findUserByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "User not found."));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "UserService::getTaskAuthor",
+                        key = "#taskId")
+    public User getTaskAuthor(final Long taskId) {
+        return userRepository
+                .findTaskAuthor(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User not found."));
     }
@@ -55,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Caching(put = {
             @CachePut(value = "UserService::getById", key = "#user.id"),
             @CachePut(value = "UserService::getByUsername",
-                      key = "#user.username")
+                    key = "#user.username")
     })
     public User update(final User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -67,14 +82,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Caching(cacheable = {
             @Cacheable(value = "UserService::getById",
-                       condition = "#user.id != null", key = "#user.id"),
+                    condition = "#user.id != null", key = "#user.id"),
             @Cacheable(value = "UserService::getByUsername",
-                       condition = "#user.username != null",
-                       key = "#user.username")
+                    condition = "#user.username != null",
+                    key = "#user.username")
     })
     public User create(final User user) {
         if (userRepository
-            .findUserByUsername(user.getUsername()).isPresent()) {
+                .findUserByUsername(user.getUsername()).isPresent()) {
             throw new IllegalStateException("User already exist.");
         }
         if (!user.getPassword().equals(user.getPasswordConfirmation())) {
@@ -85,6 +100,7 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = Set.of(Role.ROLE_USER);
         user.setRoles(roles);
         userRepository.save(user);
+        mailService.sendEmail(user, MailType.REGISTRATION, new Properties());
         return user;
     }
 

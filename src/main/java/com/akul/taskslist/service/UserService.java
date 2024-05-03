@@ -6,6 +6,8 @@ public interface UserService {
 
     User getByUsername(String username);
 
+    User getTaskAuthor(Long taskId);
+
     boolean isTaskOwner(Long userId, Long taskId);
 
     User update(User user);

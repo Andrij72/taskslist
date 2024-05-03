@@ -9,14 +9,13 @@ spring:
       host: ${REDIS_HOST}
       port: 6379
       password: ${REDIS_PASSWORD}
-
   datasource:
-    url: jdbc:postgresql://${HOST_DB}:5432/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
+    url: jdbc:postgresql://${HOST_DB}:5433/${POSTGRES_DATABASE}?currentSchema=${POSTGRES_SCHEMA}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
-      # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
+    # url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/taskslist?useSSL=false
     # username: root
     # password: root
 
@@ -24,6 +23,20 @@ spring:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
     default-schema: ${POSTGRES_SCHEMA}
+  mail:
+    host: ${SPRING_MAIL_HOST}
+    port: ${SPRING_MAIL_PORT}
+    username: ${SPRING_MAIL_USERNAME}
+    password: ${SPRING_MAIL_PASSWORD}
+    properties:
+      mail:
+        debug: false
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: ${SERVER_PORT}
