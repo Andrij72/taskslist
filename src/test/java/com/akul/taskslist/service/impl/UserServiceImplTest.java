@@ -1,10 +1,12 @@
 package com.akul.taskslist.service.impl;
 
 import com.akul.taskslist.config.TestConfig;
+import com.akul.taskslist.domain.MailType;
 import com.akul.taskslist.domain.exception.ResourceNotFoundException;
 import com.akul.taskslist.domain.user.Role;
 import com.akul.taskslist.domain.user.User;
 import com.akul.taskslist.repository.UserRepository;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.mail.MailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -35,6 +38,9 @@ public class UserServiceImplTest {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @MockBean
+    private MailServiceImpl mailService;
 
     @Test
     void getById() {
@@ -100,7 +106,7 @@ public class UserServiceImplTest {
 
     @Test
     void create() {
-        String username = "username";
+        String username = "username@gmail.com";
         String password = "password";
         User user = new User();
         user.setUsername(username);
@@ -109,14 +115,16 @@ public class UserServiceImplTest {
         Mockito.when(userRepository.findUserByUsername(username))
                 .thenReturn(Optional.empty());
         Mockito.when(passwordEncoder.encode(password))
-                .thenReturn("encodPassword");
+                .thenReturn("encodedPassword");
         User testUser = userService.create(user);
         Mockito.verify(userRepository).save(user);
-
-        Assertions.assertEquals(Set.of(Role.ROLE_USER),
-                testUser.getRoles());
-        Assertions.assertEquals("encodPassword",
+        Mockito.verify(mailService).sendEmail(user,
+                MailType.REGISTRATION,
+                new Properties());
+        Assertions.assertEquals(Set.of(Role.ROLE_USER), testUser.getRoles());
+        Assertions.assertEquals("encodedPassword",
                 testUser.getPassword());
+
     }
 
     @Test

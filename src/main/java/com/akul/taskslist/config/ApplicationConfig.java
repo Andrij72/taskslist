@@ -34,7 +34,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationConfig {
 
-
     private final JwtTokenProvider tokenProvider;
     private final ApplicationContext applicationContext;
     private final MinioProperties minioProperties;

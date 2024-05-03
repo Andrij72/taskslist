@@ -6,10 +6,7 @@ import com.akul.taskslist.repository.UserRepository;
 import com.akul.taskslist.service.AuthService;
 import com.akul.taskslist.service.ImageService;
 import com.akul.taskslist.service.TaskService;
-import com.akul.taskslist.service.impl.AuthServiceImpl;
-import com.akul.taskslist.service.impl.ImageServiceImpl;
-import com.akul.taskslist.service.impl.TaskServiceImpl;
-import com.akul.taskslist.service.impl.UserServiceImpl;
+import com.akul.taskslist.service.impl.*;
 import com.akul.taskslist.service.props.JwtProperties;
 import com.akul.taskslist.service.props.MinioProperties;
 import com.akul.taskslist.web.security.JwtTokenProvider;
@@ -19,8 +16,9 @@ import lombok.AllArgsConstructor;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import freemarker.template.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,8 +43,8 @@ public class TestConfig {
     }
 
     @Bean
-    public Configuration configuration() {
-        return Mockito.mock(Configuration.class);
+    public JavaMailSender mailSender() {
+        return  Mockito.mock(JavaMailSender.class);
     }
 
     @Bean
@@ -69,7 +67,6 @@ public class TestConfig {
     @Bean
     @Primary
     public ImageService imageService() {
-
         return new ImageServiceImpl(minioClient(), minioProperties());
     }
 
@@ -81,11 +78,23 @@ public class TestConfig {
 
     @Bean
     @Primary
-    public UserServiceImpl userService(
-            final UserRepository userRepository) {
-        return new UserServiceImpl(userRepository, testPasswordEncoder());
+    public Configuration configuration(){
+        return Mockito.mock(Configuration.class);
     }
 
+    @Bean
+    @Primary
+    public UserServiceImpl userService(
+            final UserRepository userRepository) {
+        return new UserServiceImpl(userRepository,
+                testPasswordEncoder(), mailService());
+    }
+
+    @Bean
+    @Primary
+    public MailServiceImpl mailService(){
+        return new MailServiceImpl(configuration(), mailSender());
+    }
 
     @Bean
     @Primary
@@ -94,7 +103,6 @@ public class TestConfig {
     ) {
         return new TaskServiceImpl(taskRepository, imageService());
     }
-
     @Bean
     @Primary
     public AuthService authService() {

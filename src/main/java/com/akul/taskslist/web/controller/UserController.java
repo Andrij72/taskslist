@@ -30,7 +30,8 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
 @Validated
-@Tag(name = "User Controller", description = "User API")
+@Tag(name = "User Controller",
+     description = "User API")
 public class UserController {
 
     private final UserMapper userMapper;
@@ -38,7 +39,6 @@ public class UserController {
 
     private final UserService userService;
     private final TaskService taskService;
-
 
     @GetMapping("/{id}")
     @Operation(summary = "Get user by id")
